@@ -10,7 +10,7 @@ class Gate:
     self.a_wire = a_wire
     self.b_wire = b_wire
     self.output = output
-    self.wires = (a_wire, b_wire, output)
+    self.inputs = (a_wire, b_wire)
   
   def __str__(self):
     return f"{self.a_wire} {self.type} {self.b_wire} -> {self.output}"
@@ -79,3 +79,18 @@ for line in gates_str.splitlines():
 
 circuit = Circuit(wires, gates)
 print(circuit.output)
+
+#thanks to this guy on reddit for the algorithm i used
+#https://www.reddit.com/r/adventofcode/comments/1hl698z/comment/m3llouk/
+
+input_of_or = set(itertools.chain(*(g.inputs for g in gates if g.type == "OR")))
+output_of_and = set((g.output for g in gates if g.type == "AND" and g.a_wire != "x00"))
+
+c1 = set(g.output for g in gates 
+  if g.output[0] == "z" and g.type != "XOR" and g.output != "z45")
+c2 = set(g.output for g in gates 
+  if g.type == "XOR" and g.a_wire[0] not in "xy" and g.output[0] != "z")
+c3 = input_of_or ^ output_of_and
+
+wrong_outputs = c1 | c2 | c3
+print(",".join(sorted(wrong_outputs)))
