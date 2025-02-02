@@ -25,5 +25,3 @@ total_p1 = sum([do_blink(s, 25) for s in stones])
 print(total_p1)
 total_p2 = sum([do_blink(s, 75) for s in stones])
 print(total_p2)
-
-end = time.time()
